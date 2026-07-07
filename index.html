@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Normativo — Bolsas de Investigação | NOVA FCT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#26384A;
+    --ink-soft:#57708A;
+    --paper:#F5F9FC;
+    --paper-dim:#EAF1F7;
+    --paper-card:#FFFFFF;
+    --line:#D2E1EC;
+    --brass:#5386B4;
+    --brass-soft:#E1EDF6;
+    --ebi:#647485;
+    --ebi-bg:#EBEEF2;
+    --fct:#2E7D6B;
+    --fct-bg:#E4F1EC;
+    --nova:#7A3E5C;
+    --nova-bg:#F3E7EE;
+    --note:#5C7286;
+    --shadow: 0 2px 10px rgba(38,78,110,0.07), 0 1px 2px rgba(38,78,110,0.09);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    line-height:1.6;
+  }
+  h1,h2,h3,h4{
+    font-family:'Source Serif 4',serif;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 .4em 0;
+  }
+  .app{
+    display:grid;
+    grid-template-columns:320px 1fr;
+    min-height:100vh;
+  }
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    background:var(--paper-dim);
+    border-right:1px solid var(--line);
+    padding:22px 18px 40px 22px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+  }
+  .brand{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    margin-bottom:18px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--brass);
+    font-weight:500;
+  }
+  .brand h1{
+    font-size:20px;
+    line-height:1.25;
+  }
+  .brand .sub{
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  .searchwrap{
+    position:relative;
+    margin-bottom:18px;
+  }
+  .searchwrap input{
+    width:100%;
+    padding:10px 12px 10px 34px;
+    border:1px solid var(--line);
+    border-radius:7px;
+    background:var(--paper-card);
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    color:var(--ink);
+  }
+  .searchwrap input:focus{
+    outline:none;
+    border-color:var(--brass);
+    box-shadow:0 0 0 3px var(--brass-soft);
+  }
+  .searchwrap svg{
+    position:absolute;
+    left:11px;
+    top:50%;
+    transform:translateY(-50%);
+    width:14px;
+    height:14px;
+    stroke:var(--ink-soft);
+  }
+  .search-results-count{
+    font-size:11.5px;
+    color:var(--ink-soft);
+    margin:-10px 0 14px 2px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  nav.toc{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .toc-section{
+    margin-bottom:6px;
+  }
+  .toc-section-head{
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    padding:8px 6px;
+    cursor:pointer;
+    border-radius:6px;
+    user-select:none;
+  }
+  .toc-section-head:hover{background:var(--paper-card);}
+  .toc-section-head .num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--brass);
+    font-weight:600;
+    min-width:16px;
+  }
+  .toc-section-head .title{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    flex:1;
+  }
+  .toc-section-head .chev{
+    font-size:10px;
+    color:var(--ink-soft);
+    transition:transform .15s ease;
+  }
+  .toc-section.open .toc-section-head .chev{transform:rotate(90deg);}
+  .toc-subs{
+    display:none;
+    flex-direction:column;
+    padding-left:26px;
+    margin:2px 0 8px 0;
+    border-left:1px solid var(--line);
+    margin-left:14px;
+  }
+  .toc-section.open .toc-subs{display:flex;}
+  .toc-sub{
+    padding:6px 10px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    border-radius:5px;
+    line-height:1.4;
+  }
+  .toc-sub:hover{background:var(--paper-card); color:var(--ink);}
+  .toc-sub.active{
+    background:var(--brass-soft);
+    color:var(--ink);
+    font-weight:600;
+  }
+  .legend{
+    margin-top:22px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .legend .lg-title{
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--ink-soft);
+    font-family:'JetBrains Mono',monospace;
+    margin-bottom:4px;
+  }
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+  /* ---------- MAIN ---------- */
+  main{
+    padding:36px 56px 80px 56px;
+    max-width:880px;
+  }
+  .crumbs{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+    letter-spacing:.02em;
+  }
+  .crumbs .sep{margin:0 6px; color:var(--line);}
+  .article-head{
+    margin-bottom:26px;
+    padding-bottom:20px;
+    border-bottom:2px solid var(--ink);
+  }
+  .article-head h2{
+    font-size:30px;
+    line-height:1.15;
+  }
+  .article-head .desc{
+    color:var(--ink-soft);
+    font-size:14.5px;
+    margin-top:8px;
+    max-width:65ch;
+  }
+  .block{margin-bottom:26px;}
+  .block p{
+    margin:0 0 14px 0;
+    color:var(--ink);
+    max-width:70ch;
+  }
+  .block h3{
+    font-size:17px;
+    margin-top:28px;
+    margin-bottom:10px;
+  }
+  mark{
+    background:var(--brass-soft);
+    color:var(--ink);
+    padding:0 2px;
+    border-radius:2px;
+  }
+  /* comparison card — signature element */
+  .quadro{
+    margin:22px 0 30px 0;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    background:var(--paper-card);
+    box-shadow:var(--shadow);
+  }
+  .quadro-title{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--brass);
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--brass-soft);
+    font-weight:600;
+  }
+  .quadro-row{
+    display:grid;
+    grid-template-columns:130px 1fr 1fr 1fr;
+    border-bottom:1px solid var(--line);
+  }
+  .quadro-row:last-child{border-bottom:none;}
+  .quadro-row.notes{
+    grid-template-columns:130px 1fr;
+    background:var(--paper-dim);
+  }
+  .qcell{
+    padding:12px 14px;
+    font-size:12.8px;
+    border-right:1px solid var(--line);
+    line-height:1.55;
+  }
+  .qcell:last-child{border-right:none;}
+  .qcell.tema{
+    font-weight:600;
+    background:var(--paper-dim);
+    color:var(--ink);
+    font-size:12.5px;
+  }
+  .qcell.ebi{border-top:3px solid var(--ebi);}
+  .qcell.fct{border-top:3px solid var(--fct);}
+  .qcell.nova{border-top:3px solid var(--nova);}
+  .qcell .src-tag{
+    display:block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+  .quadro-row.head-row{
+    background:var(--ink);
+    grid-template-columns:130px 1fr 1fr 1fr;
+  }
+  .quadro-row.head-row .qcell{
+    color:var(--paper);
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    background:transparent;
+    border-right:1px solid rgba(255,255,255,.12);
+    padding:9px 14px;
+  }
+  .qcell.notes-cell{
+    font-style:italic;
+    color:var(--note);
+    font-size:12.3px;
+  }
+  .refs-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:10px 0 20px 0;
+  }
+  .ref-pill{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    padding:4px 10px;
+    border-radius:20px;
+    font-weight:500;
+  }
+  .ref-pill.ebi{background:var(--ebi-bg); color:var(--ebi);}
+  .ref-pill.fct{background:var(--fct-bg); color:var(--fct);}
+  .ref-pill.nova{background:var(--nova-bg); color:var(--nova);}
+  .status-note{
+    margin-top:40px;
+    padding:14px 16px;
+    background:var(--paper-dim);
+    border-left:3px solid var(--brass);
+    border-radius:0 6px 6px 0;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  /* welcome */
+  .welcome .lead{
+    font-size:16px;
+    color:var(--ink-soft);
+    max-width:62ch;
+    margin-bottom:26px;
+  }
+  .kpi-row{
+    display:flex;
+    gap:14px;
+    margin:26px 0 34px 0;
+    flex-wrap:wrap;
+  }
+  .kpi{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 18px;
+    min-width:130px;
+    box-shadow:var(--shadow);
+  }
+  .kpi .n{
+    font-family:'Source Serif 4',serif;
+    font-size:26px;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .kpi .l{
+    font-size:11.5px;
+    color:var(--ink-soft);
+    margin-top:2px;
+  }
+  .quickcards{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:10px;
+  }
+  .qcard{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 18px;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    transition:transform .12s ease, border-color .12s ease;
+  }
+  .qcard:hover{
+    transform:translateY(-2px);
+    border-color:var(--brass);
+  }
+  .qcard .num{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--brass);
+    font-size:11px;
+    font-weight:600;
+  }
+  .qcard h4{font-size:15px; margin-top:4px;}
+  .qcard p{font-size:12.5px; color:var(--ink-soft); margin:0;}
+  .no-results{
+    padding:40px 20px;
+    text-align:center;
+    color:var(--ink-soft);
+  }
+  ::-webkit-scrollbar{width:9px;}
+  ::-webkit-scrollbar-thumb{background:var(--line); border-radius:6px;}
+  footer.app-footer{
+    grid-column:1 / -1;
+    padding:14px 24px;
+    text-align:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    background:var(--paper-dim);
+    border-top:1px solid var(--line);
+  }
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr;}
+    .sidebar{
+      position:relative;
+      height:auto;
+      max-height:60vh;
+    }
+    main{padding:26px 20px 60px 20px;}
+    .quadro-row{grid-template-columns:100px 1fr;}
+    .qcell.fct, .qcell.nova{grid-column:span 1;}
+    .quickcards{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="eyebrow">NOVA FCT · Divisão de Recursos Humanos</span>
+      <h1>Manual Normativo</h1>
+      <span class="sub">Bolsas de Investigação — versão digital · junho 2026</span>
+    </div>
+
+    <div class="searchwrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="searchInput" type="text" placeholder="Pesquisar por tema, artigo ou palavra-chave…" autocomplete="off">
+    </div>
+    <div class="search-results-count" id="searchCount"></div>
+
+    <nav class="toc" id="toc"></nav>
+
+    <div class="legend">
+      <div class="lg-title">Fontes normativas</div>
+      <div class="legend-item"><span class="dot" style="background:var(--ebi)"></span>EBI — Estatuto do Bolseiro de Investigação</div>
+      <div class="legend-item"><span class="dot" style="background:var(--fct)"></span>FCT, I.P. — Regulamento de Bolsas</div>
+      <div class="legend-item"><span class="dot" style="background:var(--nova)"></span>NOVA — Regulamento de Bolsas UNL</div>
+    </div>
+  </aside>
+
+  <main id="main"></main>
+
+  <footer class="app-footer">Documento de trabalho desenvolvido com apoio de Inteligência Artificial · conteúdo a validar pela Divisão de Recursos Humanos da NOVA FCT</footer>
+
+</div>
+
+<script>
+/* =========================================================
+   DADOS ESTRUTURADOS DO MANUAL
+   Cada "entry" corresponde a uma secção/subsecção e inclui
+   texto integral + tabelas comparativas + referências legais.
+   Esta mesma estrutura (id, secção, tema, refs) é o formato
+   pensado para alimentar o Assistente Virtual do Bolseiro.
+========================================================= */
+const DATA = [
+{id:"1.1", section:"I", sectionTitle:"Introdução e objetivos", sub:"1.1", subTitle:"Introdução",
+ tags:["introdução","enquadramento","EBI","FCT","NOVA"],
+ body:[
+  "O presente manual sistematiza, de forma comparativa e sintética, os regimes jurídicos aplicáveis às bolsas de investigação, organizando de forma clara e operacional as disposições constantes do Estatuto do Bolseiro de Investigação e dos Regulamentos das Bolsas de Investigação da Fundação para a Ciência e a Tecnologia, I.P. (FCT, I.P.) e da Universidade NOVA de Lisboa (NOVA).",
+  "O documento destina-se a apoiar os serviços administrativos e os restantes intervenientes nos processos de gestão de bolsas de investigação na correta aplicação do enquadramento jurídico e regulamentar aplicável.",
+  "O Estatuto do Bolseiro de Investigação (EBI) — Lei n.º 40/2004, de 18 de agosto, na sua redação atualmente em vigor — constitui o diploma de enquadramento geral aplicável às bolsas de investigação em Portugal, independentemente da entidade financiadora.",
+  "O Regulamento de Bolsas de Investigação da FCT, I.P. — Regulamento n.º 950/2019, de 16 de dezembro, alterado e republicado pelo Aviso (extrato) n.º 412/2026/2, de 7 de janeiro — concretiza e operacionaliza o EBI, aplicando-se às bolsas financiadas direta ou indiretamente pela FCT, I.P.",
+  "O Regulamento de Bolsas de Investigação da Universidade NOVA de Lisboa, aprovado pelo Despacho n.º 9484/2023, de 29 de agosto, estabelece as diretrizes aplicáveis à contratação de bolseiros no âmbito de projetos, unidades de investigação, unidades orgânicas e serviços da NOVA, quando se trate de bolsas financiadas exclusivamente por entidades distintas da FCT, I.P.",
+  "Em caso de omissão nos regulamentos aplicáveis, prevalecem as disposições do EBI enquanto diploma de enquadramento geral. O manual não substitui a lei nem os regulamentos aplicáveis, devendo estes ser sempre consultados."
+ ], refs:{EBI:["Lei n.º 40/2004"], FCT:["Regulamento n.º 950/2019"], NOVA:["Despacho n.º 9484/2023"]}},
+
+{id:"1.2", section:"I", sectionTitle:"Introdução e objetivos", sub:"1.2", subTitle:"Objetivos",
+ tags:["objetivos","transparência","DRH"],
+ body:[
+  "O presente manual tem por objetivos:",
+  "• Reunir, num documento único, as orientações normativas e operacionais relacionadas com os processos de atribuição, contratação e gestão das bolsas de investigação.",
+  "• Garantir que os procedimentos administrativos respeitam o enquadramento jurídico aplicável.",
+  "• Apoiar a Divisão de Recursos Humanos (DRH) e os restantes intervenientes nos processos de bolsas de investigação na execução das tarefas de contratação e gestão das mesmas, reduzindo o risco de imprecisões e assegurando a consistência na tramitação dos processos.",
+  "• Promover a transparência, a equidade e a uniformidade na tramitação dos concursos e na gestão dos contratos de bolsa."
+ ], refs:{}},
+
+{id:"2.1", section:"II", sectionTitle:"Enquadramento legal e tipologias de bolsas", sub:"2.1", subTitle:"Enquadramento legal",
+ tags:["enquadramento legal","vínculo","natureza jurídica"],
+ body:[
+  "As bolsas de investigação destinam-se ao desenvolvimento de atividades temporárias de investigação científica e de formação avançada, nos termos do Estatuto do Bolseiro de Investigação.",
+  "A atribuição de uma bolsa não configura vínculo laboral nem relação de prestação de serviços, não podendo, em caso algum, ser utilizada para suprir necessidades permanentes dos serviços.",
+  "O regime jurídico das bolsas de investigação assenta no EBI, enquanto diploma legal de enquadramento geral, sendo concretizado e operacionalizado pelos regulamentos da FCT, I.P. e da NOVA, nos respetivos âmbitos de aplicação."
+ ], refs:{EBI:["Art. 1.º"]}},
+
+{id:"2.2", section:"II", sectionTitle:"Enquadramento legal e tipologias de bolsas", sub:"2.2", subTitle:"Aplicação legal",
+ tags:["aplicação legal"],
+ body:["A aplicação dos diplomas legais e regulamentares às bolsas de investigação observa o enquadramento definido na Secção I do presente manual."], refs:{}},
+
+{id:"2.3", section:"II", sectionTitle:"Enquadramento legal e tipologias de bolsas", sub:"2.3", subTitle:"Tipologias de bolsas",
+ tags:["tipologias","BII","BI","BIPD"],
+ body:[
+  "Nos termos do EBI e dos regulamentos aplicáveis, as bolsas de investigação organizam-se em diferentes tipologias, definidas em função do perfil dos destinatários e dos objetivos de formação e investigação prosseguidos.",
+  "As três tipologias principais são a Bolsa de Iniciação à Investigação (BII), a Bolsa de Investigação (BI) e a Bolsa de Investigação Pós-Doutoral (BIPD), detalhadas nas subsecções seguintes com indicação dos respetivos requisitos, limites e condições."
+ ], refs:{}},
+
+{id:"2.3.1", section:"II", sectionTitle:"Enquadramento legal e tipologias de bolsas", sub:"2.3.1", subTitle:"Bolsas de Iniciação à Investigação (BII)",
+ tags:["BII","estudantes","duração","renovação"],
+ body:["As Bolsas de Iniciação à Investigação (BII) destinam-se a estudantes do ensino superior que pretendam iniciar-se em atividades de investigação científica e tecnológica, integrando projetos ou equipas de investigação, sob orientação científica."],
+ table:{
+  title:"Quadro 1 · Bolsas de Iniciação à Investigação — BII",
+  rows:[
+   {tema:"Objeto da bolsa", ebi:"Trabalhos de iniciação à investigação para obtenção de graus/diplomas do ensino superior.", ebiRef:"Art. 2.º, n.º 1, al. a)",
+     fct:"Estudantes inscritos em curso técnico superior profissional, licenciatura, mestrado integrado ou mestrado.", fctRef:"Art. 5.º, n.º 1 e n.º 2",
+     nova:"Idêntico à FCT, I.P., incluindo também mestres inscritos em curso não conferente de grau académico.", novaRef:"Art. 6.º, n.º 1 e n.º 2",
+     notes:"O Regulamento da NOVA alarga ligeiramente o universo de destinatários face ao da FCT, I.P."},
+   {tema:"Duração", ebi:"Máximo: 1 ano.", ebiRef:"Art. 3.º, n.º 1-2",
+     fct:"Mínimo 1 mês; máximo 1 ano.", fctRef:"Art. 5.º, n.º 3-4",
+     nova:"Mínimo 1 mês; máximo 1 ano.", novaRef:"Art. 6.º, n.º 3-4",
+     notes:"Sem diferença entre os três diplomas."},
+   {tema:"Renovação", ebi:"Regulamentos devem respeitar o limite máximo de 1 ano.", ebiRef:"Art. 3.º, n.º 2-3",
+     fct:"Até 1 ano, seguidas ou interpoladas.", fctRef:"Art. 5.º, n.º 4",
+     nova:"Idêntico ao regime da FCT, I.P.", novaRef:"Art. 6.º, n.º 4",
+     notes:"Sem diferença."},
+   {tema:"Impedimento de atribuição", ebi:"Não prevê exclusão por bolsas anteriores.", ebiRef:"—",
+     fct:"Exclui quem já tenha beneficiado de bolsa financiada pela FCT, I.P. ao abrigo do EBI.", fctRef:"Art. 5.º, n.º 5",
+     nova:"Exclui quem já tenha beneficiado de qualquer BII ao abrigo do EBI.", novaRef:"Art. 6.º, n.º 5",
+     notes:"Sem diferença material entre FCT, I.P. e NOVA."}
+  ]}},
+
+{id:"2.3.2", section:"II", sectionTitle:"Enquadramento legal e tipologias de bolsas", sub:"2.3.2", subTitle:"Bolsas de Investigação (BI)",
+ tags:["BI","mestrado","doutoramento","duração","estrangeiro"],
+ body:["As Bolsas de Investigação (BI) destinam-se a licenciados, mestres ou doutorandos que desenvolvam atividades de investigação científica ou tecnológica associadas a projetos, teses ou planos de formação avançada, em Portugal ou no estrangeiro. Podem ser no país, mistas ou no estrangeiro, consoante o plano de trabalhos; nas BI mistas, o período em instituição estrangeira não pode exceder dois anos."],
+ table:{
+  title:"Quadro 2 · Bolsa de Investigação — BI",
+  rows:[
+   {tema:"Objeto da bolsa", ebi:"Trabalhos de investigação para obtenção de graus/diplomas do ensino superior.", ebiRef:"Art. 2.º, n.º 1, al. a)",
+     fct:"Estudantes de mestrado integrado, mestrado, doutoramento, ou licenciados/mestres em curso não conferente de grau.", fctRef:"Art. 6.º, n.º 1-2",
+     nova:"Idêntico ao regime da FCT, I.P.", novaRef:"Art. 7.º, n.º 1-2",
+     notes:"Sem diferença."},
+   {tema:"Duração", ebi:"Limites máximos: 2 anos (mestrado), 4 anos (doutoramento), 3 anos (pós-doutoral), 1 ano (demais situações).", ebiRef:"Art. 3.º, n.º 2",
+     fct:"Em regra 1 ano; mínimo 3 meses.", fctRef:"Art. 6.º, n.º 3",
+     nova:"Idêntico ao regime da FCT, I.P.", novaRef:"Art. 7.º, n.º 3",
+     notes:"Sem diferença."},
+   {tema:"Renovação", ebi:"Remete para os regulamentos, respeitando os limites máximos por tipologia.", ebiRef:"Art. 3.º, n.º 2-3",
+     fct:"Até 1 ano (curso não conferente de grau); até 2 anos (mestrado); até 4 anos (doutoramento).", fctRef:"Art. 6.º, n.º 4",
+     nova:"Idêntico ao regime da FCT, I.P.", novaRef:"Art. 7.º, n.º 4",
+     notes:"Sem diferença."},
+   {tema:"Modalidade geográfica", ebi:"Não aborda bolsas no estrangeiro; estabelece apenas princípios gerais.", ebiRef:"—",
+     fct:"Bolsas no país, mistas ou no estrangeiro; nas mistas, limite de metade da duração e teto de 2 anos no estrangeiro.", fctRef:"Art. 6.º, n.º 7-8",
+     nova:"Prevê bolsas de caráter misto (parte na instituição, parte no estrangeiro).", novaRef:"Art. 7.º, n.º 7",
+     notes:"O Regulamento da FCT, I.P. é mais detalhado quanto aos limites da componente no estrangeiro."}
+  ]}},
+
+{id:"2.3.3", section:"II", sectionTitle:"Enquadramento legal e tipologias de bolsas", sub:"2.3.3", subTitle:"Bolsas de Investigação Pós-Doutoral (BIPD)",
+ tags:["BIPD","doutorados","pós-doutoramento"],
+ body:[
+  "As Bolsas de Investigação Pós-Doutoral (BIPD) destinam-se à realização de atividades de I&D por titulares do grau de doutor, sendo restritas temporalmente de forma a estimular o emprego científico.",
+  "As BIPD só podem ser concedidas desde que se verifiquem cumulativamente os seguintes requisitos: (a) o grau de doutor tenha sido obtido nos três anos anteriores à candidatura; (b) a investigação pós-doutoral seja realizada em entidade de acolhimento distinta daquela onde foi obtido o grau; (c) as atividades não exijam experiência pós-doutoral; (d) tenham um prazo igual ou inferior a três anos; (e) o bolseiro não exceda, com renovações incluídas, um período acumulado de três anos nesta tipologia.",
+  "A duração da BIPD é, em regra, anual, não podendo ser concedida por períodos inferiores a três meses consecutivos, sendo renovável até ao prazo máximo de três anos."
+ ], refs:{FCT:["Art. 7.º"], NOVA:["Regulamento Despacho n.º 9484/2023"]}},
+
+{id:"3.1", section:"III", sectionTitle:"Procedimento de candidatura, avaliação e atribuição das bolsas", sub:"3.1", subTitle:"Abertura de concurso",
+ tags:["concurso","júri","candidatura"],
+ body:["A abertura de concurso constitui o ato formal que dá início ao procedimento de atribuição de bolsas de investigação. Nesta fase são definidos os elementos estruturantes do procedimento concursal, designadamente a competência para a sua abertura, o âmbito do concurso e a composição do júri responsável pela avaliação das candidaturas."],
+ table:{
+  title:"Quadro 4 · Abertura do concurso",
+  rows:[
+   {tema:"Competência para abertura", ebi:"Não regula expressamente a matéria.", ebiRef:"—",
+     fct:"Não especifica o órgão competente.", fctRef:"Art. 8.º",
+     nova:"O Reitor ou o Diretor da Unidade Orgânica aprovam a abertura e nomeiam o júri, sob proposta do Presidente de Departamento ou Coordenador de I&D/IR.", novaRef:"Art. 9.º e 11.º",
+     notes:"Apenas o Regulamento da NOVA define a competência institucional."},
+   {tema:"Âmbito e tipos de concurso", ebi:"Exige que regulamento e aviso indiquem tipo, fins, objeto, duração e categorias de destinatários.", ebiRef:"Art. 6.º, n.º 2",
+     fct:"Acrescenta a possibilidade de definição de grupos de destinatários.", fctRef:"Art. 8.º, n.º 1",
+     nova:"Concursos para um ou mais tipos de bolsas do regulamento.", novaRef:"Art. 10.º, n.º 1",
+     notes:"O Regulamento da FCT, I.P. permite segmentação por público."},
+   {tema:"Júri / composição / competência", ebi:"Não regula expressamente a matéria.", ebiRef:"—",
+     fct:"Não regula expressamente a matéria.", fctRef:"—",
+     nova:"Júri nomeado pelo Reitor/Diretor, mínimo 3 membros doutorados, podendo integrar peritos externos; compete-lhe admissão/exclusão, avaliação, ordenação, seleção e resposta a alegações.", novaRef:"Art. 10.º e 11.º",
+     notes:"Só o Regulamento da NOVA define composição, nomeação e competência do júri."}
+  ]}},
+
+{id:"3.2", section:"III", sectionTitle:"Procedimento de candidatura, avaliação e atribuição das bolsas", sub:"3.2", subTitle:"Publicitação e conteúdo do aviso de abertura",
+ tags:["publicitação","aviso de abertura","divulgação"],
+ body:["Após a decisão de abertura do concurso, deve proceder-se à respetiva publicitação e à definição dos elementos que integram o aviso de abertura do concurso, instrumento central de informação aos candidatos quanto a condições de candidatura, critérios de avaliação e prazos."],
+ table:{
+  title:"Quadro 5 · Publicitação e conteúdo do aviso de abertura",
+  rows:[
+   {tema:"Publicitação", ebi:"Não regula expressamente os canais.", ebiRef:"—",
+     fct:"Internet, portais de oportunidades científicas e sítio institucional; admite outros meios.", fctRef:"Art. 8.º, n.º 2",
+     nova:"Internet, meios de comunicação científica e espaço físico na NOVA; outros meios se adequado.", novaRef:"Art. 10.º, n.º 2",
+     notes:"Os regulamentos da FCT, I.P. e NOVA detalham o previsto no EBI."},
+   {tema:"Prazo das candidaturas", ebi:"Não regula expressamente a matéria.", ebiRef:"—",
+     fct:"O aviso deve indicar o prazo, sem número mínimo de dias fixado.", fctRef:"Art. 8.º, n.º 3, al. d)",
+     nova:"Idêntico ao regime da FCT, I.P.", novaRef:"Art. 10.º, n.º 3, al. g)",
+     notes:"Nenhum diploma fixa um número mínimo de dias de candidatura."},
+   {tema:"Guiões de apoio", ebi:"Não regula expressamente a matéria.", ebiRef:"—",
+     fct:"Podem ser elaborados, não podendo acrescentar condições face ao aviso de abertura.", fctRef:"Art. 8.º, n.º 5-6",
+     nova:"Não regula expressamente a matéria.", novaRef:"—",
+     notes:"Apenas o Regulamento da FCT, I.P. admite guiões de apoio ao procedimento concursal."}
+  ]}},
+
+{id:"3.3", section:"III", sectionTitle:"Procedimento de candidatura, avaliação e atribuição das bolsas", sub:"3.3", subTitle:"Elegibilidade",
+ tags:["elegibilidade","requisitos","candidatos"],
+ body:["A definição dos critérios de elegibilidade visa determinar as condições que os candidatos devem cumprir para que a candidatura seja considerada válida, sendo verificados na fase de análise das candidaturas. Esta verificação permite excluir candidaturas que não preencham os requisitos do aviso de abertura, assegurando a aplicação uniforme e equitativa das regras a todos os candidatos."], refs:{FCT:["Art. 9.º"], NOVA:["Art. 12.º"]}},
+
+{id:"3.4", section:"III", sectionTitle:"Procedimento de candidatura, avaliação e atribuição das bolsas", sub:"3.4", subTitle:"Documentos de suporte da candidatura",
+ tags:["documentos","candidatura","certificados","declaração de honra"],
+ body:["Os documentos de suporte da candidatura destinam-se a comprovar o cumprimento dos requisitos estabelecidos no aviso de abertura do concurso e nos regulamentos aplicáveis. A documentação apresentada deve circunscrever-se ao estritamente necessário para a verificação da elegibilidade e para a instrução da candidatura."],
+ table:{
+  title:"Quadro 7A · Documentação da candidatura",
+  rows:[
+   {tema:"Base documental exigida", ebi:"Não regula expressamente a matéria.", ebiRef:"—",
+     fct:"O aviso de abertura define a lista completa de documentos para cada concurso.", fctRef:"Art. 10.º, n.º 1",
+     nova:"Lista base: certificado do grau com média final; CV; cartas de recomendação/motivação (facultativo); outros documentos do aviso.", novaRef:"Art. 13.º, n.º 1, al. a-c)",
+     notes:"O Regulamento da FCT, I.P. remete para o aviso; o da NOVA prevê uma base documental padronizada."},
+   {tema:"Substituição por declaração de honra", ebi:"Não regula expressamente a matéria.", ebiRef:"—",
+     fct:"Pode haver dispensa de certificados/reconhecimento de grau estrangeiro na candidatura, substituídos por declaração de honra.", fctRef:"Art. 13.º, n.º 2-3",
+     nova:"Quando não seja possível apresentar certificados até ao termo do prazo, admite-se substituição por declaração sob compromisso de honra, até à contratualização.", novaRef:"Art. 13.º, n.º 2",
+     notes:"O Regulamento da FCT, I.P. é mais explícito quanto ao reconhecimento de graus obtidos no estrangeiro."}
+  ]}},
+
+{id:"3.5", section:"III", sectionTitle:"Procedimento de candidatura, avaliação e atribuição das bolsas", sub:"3.5", subTitle:"Avaliação das candidaturas",
+ tags:["avaliação","mérito","júri","critérios"],
+ body:["A avaliação constitui a etapa central do processo de seleção, na qual é apreciado o mérito do candidato e a adequação do plano de trabalhos, nos termos definidos no aviso de abertura do concurso. As decisões devem ser fundamentadas, transparentes e comparáveis, assegurando a igualdade de oportunidades entre candidatos."],
+ table:{
+  title:"Quadro 8 · Avaliação das candidaturas",
+  rows:[
+   {tema:"Parâmetros e critérios de avaliação", ebi:"Não regula expressamente a matéria.", ebiRef:"—",
+     fct:"Avaliação segundo o aviso de abertura, em regra com base em: mérito do candidato; mérito do plano de trabalhos; mérito das condições de acolhimento e orientação.", fctRef:"Art. 11.º, n.º 2-3",
+     nova:"Avaliação segundo os parâmetros do aviso de abertura, com particular incidência no mérito do candidato.", novaRef:"Art. 14.º",
+     notes:"O Regulamento da FCT, I.P. explicita três critérios mínimos; o da NOVA remete para o aviso, destacando o mérito do candidato."}
+  ]}},
+
+{id:"3.6-3.9", section:"III", sectionTitle:"Procedimento de candidatura, avaliação e atribuição das bolsas", sub:"3.6 – 3.9", subTitle:"Resultados, contratualização, execução e cessação",
+ tags:["resultados","contratualização","execução","relatório final","cessação"],
+ body:[
+  "Estas subsecções abordam, sequencialmente: os resultados e o prazo de aceitação da bolsa (3.6); a concessão e contratualização da bolsa, incluindo os procedimentos administrativos associados (3.7); a execução da bolsa de investigação (3.8); e o relatório final e a cessação da bolsa (3.9).",
+  "Quanto ao relatório final de atividades: o bolseiro deve apresentá-lo nos termos do regulamento e contrato aplicáveis. No regime FCT, I.P., o prazo é de 60 dias úteis após o termo da bolsa, acompanhado do parecer do(s) orientador(es) científico(s); no regime NOVA, o prazo é de 15 dias úteis após o termo da bolsa, segundo modelo próprio.",
+  "Quanto à cessação: o EBI prevê cessação por incumprimento reiterado, falsas declarações, conclusão do plano de trabalhos, decurso do prazo contratual, revogação por mútuo acordo, alteração de circunstâncias ou constituição de relação jurídico-laboral com a entidade de acolhimento. O Regulamento da FCT, I.P. acrescenta a possibilidade de restituição de montantes indevidamente recebidos; o Regulamento da NOVA prevê o cancelamento em caso de violação grave ou reiterada de deveres, avaliação negativa ou falsas declarações, sempre após audição do bolseiro."
+ ],
+ refs:{EBI:["Art. 6.º","Art. 17.º"], FCT:["Art. 24.º","Art. 26.º"], NOVA:["Art. 32.º","Art. 33.º"]}},
+
+{id:"4", section:"IV", sectionTitle:"Regime de exclusividade", sub:"—", subTitle:"Regime de exclusividade",
+ tags:["exclusividade","dedicação exclusiva","acumulação"],
+ body:[
+  "O regime de dedicação exclusiva constitui um elemento essencial das bolsas de investigação, implicando a afetação prioritária da atividade do bolseiro ao plano de trabalhos associado à bolsa.",
+  "A dedicação exclusiva não impede a acumulação com determinadas atividades consideradas compatíveis, desde que não prejudiquem a execução da bolsa e sejam observados os requisitos legais e procedimentais aplicáveis — designadamente a prestação de serviço docente, dentro dos limites de horas semanais e anuais fixados na lei, e a realização de atividades externas diretamente relacionadas com o plano de trabalhos ou sem caráter de permanência.",
+  "O EBI estabelece o regime geral de dedicação exclusiva, cabendo aos regulamentos da FCT, I.P. e da NOVA a sua concretização."
+ ], refs:{EBI:["Art. 5.º","Art. 9.º"], FCT:["Art. 16.º"]}},
+
+{id:"5", section:"V", sectionTitle:"Renovação do contrato", sub:"—", subTitle:"Renovação do contrato",
+ tags:["renovação","prazos","orientador científico"],
+ body:["A renovação da bolsa de investigação permite prolongar a sua vigência para além do período inicialmente contratado, desde que essa possibilidade esteja prevista no aviso de abertura do concurso e no regulamento aplicável. Depende do cumprimento dos requisitos previstos, do parecer favorável do orientador científico e da existência de dotação orçamental."],
+ table:{
+  title:"Quadro 17 · Renovação do contrato",
+  rows:[
+   {tema:"Base legal", ebi:"Remete para o regulamento os termos e condições de renovação da bolsa.", ebiRef:"Art. 6.º, n.º 1, al. e)",
+     fct:"Depende do previsto no regulamento sobre limites máximos de prazos; deve constar do aviso de abertura.", fctRef:"Art. 15.º, n.º 1",
+     nova:"Estabelece regras procedimentais e prazos para a renovação.", novaRef:"Art. 19.º",
+     notes:"O EBI define o enquadramento geral; os regulamentos concretizam os procedimentos."},
+   {tema:"Limites de duração", ebi:"2 anos (mestrado), 4 anos (doutoramento), 3 anos (pós-doutoral), 1 ano (demais tipologias).", ebiRef:"Art. 3.º, n.º 2",
+     fct:"Renovável até ao limite máximo previsto para a tipologia, quando previsto no aviso de abertura.", fctRef:"Art. 15.º, n.º 1",
+     nova:"Renovável até ao limite máximo previsto para a tipologia.", novaRef:"Art. 19.º",
+     notes:"Os regulamentos convergem nos limites definidos pelo EBI."},
+   {tema:"Quem solicita", ebi:"Remete para o regulamento.", ebiRef:"Art. 6.º, n.º 1, al. e)",
+     fct:"O bolseiro solicita a renovação.", fctRef:"Art. 15.º, n.º 2",
+     nova:"A renovação é proposta institucionalmente (Presidente de Departamento/Coordenador da Unidade I&D/Investigador Responsável).", novaRef:"Art. 19.º",
+     notes:"O Regulamento da FCT, I.P. exige pedido do bolseiro; o da NOVA prevê proposta institucional."}
+  ]}},
+
+{id:"6", section:"VI", sectionTitle:"Componentes financeiras das bolsas e matérias associadas", sub:"—", subTitle:"Componentes financeiras das bolsas",
+ tags:["subsídio mensal","valores","atualização","bolsas mistas","subsídio de viagem"],
+ body:["A presente secção sistematiza os principais aspetos relativos às componentes financeiras das bolsas de investigação, incluindo o subsídio mensal de manutenção e outros apoios associados, cujo enquadramento jurídico é definido no EBI e concretizado nos regulamentos da FCT, I.P. e da NOVA. Os valores concretos, elegibilidade e prazos aplicáveis constam do aviso de abertura do concurso e dos regulamentos em vigor."],
+ table:{
+  title:"Quadro 18 · Componentes financeiras nucleares",
+  rows:[
+   {tema:"Subsídio mensal de manutenção (base)", ebi:"A entidade de acolhimento é subsidiariamente responsável pelo pagamento da bolsa, quando aplicável.", ebiRef:"Art. 13.º, n.º 3-4",
+     fct:"Subsídio mensal cujo montante varia com o tipo de bolsa, situação do bolseiro e local (nacional/estrangeiro), conforme tabela do Anexo I.", fctRef:"Art. 18.º, n.º 1 + Anexo I",
+     nova:"Subsídio mensal nos termos da tabela do Anexo I, idêntica à da FCT, I.P.", novaRef:"Art. 25.º, n.º 1 + Anexo I",
+     notes:"O EBI estabelece o princípio geral; os valores concretos constam das tabelas anexas dos regulamentos."},
+   {tema:"Atualização dos valores", ebi:"Não regula expressamente a matéria.", ebiRef:"—",
+     fct:"Atualização anual até 31 de janeiro, considerando a Retribuição Mínima Mensal Garantida; retroativos pagos até final do 1.º trimestre.", fctRef:"Art. 18.º, n.º 2-3",
+     nova:"Atualização anual dos valores mínimos (e proporcionalmente dos máximos), publicada no sítio institucional.", novaRef:"Art. 25.º, n.º 4",
+     notes:"O Regulamento da FCT, I.P. fixa um calendário próprio; o da NOVA remete para a atualização legal aplicável."},
+   {tema:"Bolsas mistas / complemento para estrangeiro", ebi:"Não regula expressamente a matéria.", ebiRef:"—",
+     fct:"Valores diferenciados 'no país / estrangeiro'.", fctRef:"Anexo I",
+     nova:"Nas bolsas mistas (BI e BIPD), o período em instituição estrangeira pode ser remunerado por valor superior.", novaRef:"Art. 25.º, n.º 10",
+     notes:"Ambos os regulamentos preveem majoração para o período realizado no estrangeiro."},
+   {tema:"Subsídio proporcional", ebi:"Não regula expressamente a matéria.", ebiRef:"—",
+     fct:"Subsídio proporcional se o plano de trabalhos não cobrir um mês inteiro.", fctRef:"Art. 18.º, n.º 9",
+     nova:"Não regula expressamente a matéria.", novaRef:"—",
+     notes:"Regra expressa apenas no Regulamento da FCT, I.P."},
+   {tema:"Subsídios não devidos (alimentação/férias/Natal)", ebi:"Não regula expressamente a matéria.", ebiRef:"—",
+     fct:"Proíbe a atribuição de subsídios adicionais deste tipo.", fctRef:"Art. 18.º, n.º 15",
+     nova:"Proíbe subsídios extra.", novaRef:"Art. 25.º, n.º 11",
+     notes:"Regime idêntico entre FCT, I.P. e NOVA."}
+  ]},
+ extra:["Para além do subsídio mensal, a bolsa pode incluir: subsídio de inscrição/matrícula/propina (bolsas associadas a grau académico); reembolso de seguro de saúde obrigatório no estrangeiro; subsídio único de viagem e de instalação (estadias ≥ 6 meses no estrangeiro); e subsídio para participação em reuniões científicas. Estas componentes são cumuláveis entre si, sempre dependentes de disponibilidade orçamental da entidade financiadora."]},
+
+{id:"7.1", section:"VII", sectionTitle:"Seguro Social Voluntário", sub:"7.1", subTitle:"Natureza e objetivo do SSV",
+ tags:["SSV","segurança social","proteção social"],
+ body:["O Seguro Social Voluntário (SSV) é um regime contributivo facultativo que visa assegurar proteção social, designadamente nas eventualidades de invalidez, velhice, doença, parentalidade ou morte, a pessoas que não se encontrem abrangidas por regimes obrigatórios de proteção social."], refs:{}},
+
+{id:"7.2", section:"VII", sectionTitle:"Seguro Social Voluntário", sub:"7.2", subTitle:"Enquadramento legal",
+ tags:["SSV","enquadramento legal"],
+ body:["O acesso dos bolseiros de investigação ao regime do SSV encontra-se previsto no EBI, bem como na legislação aplicável da Segurança Social. Os regulamentos da FCT, I.P. e da NOVA concretizam o regime aplicável às bolsas financiadas no respetivo âmbito, designadamente quanto ao suporte ou reembolso das contribuições."], refs:{}},
+
+{id:"7.3", section:"VII", sectionTitle:"Seguro Social Voluntário", sub:"7.3", subTitle:"Regime aplicável aos bolseiros",
+ tags:["SSV","inscrição","bolseiro"],
+ body:["A inscrição no SSV é da iniciativa do bolseiro e depende da inexistência de enquadramento noutro regime obrigatório de proteção social. Os termos da inscrição, das contribuições devidas e da produção de efeitos são regulados pela legislação da Segurança Social, sem prejuízo do disposto nos regulamentos das entidades financiadoras quanto ao eventual suporte ou reembolso das contribuições."], refs:{}},
+
+{id:"7.4", section:"VII", sectionTitle:"Seguro Social Voluntário", sub:"7.4", subTitle:"Contribuições",
+ tags:["SSV","contribuições","escalão contributivo"],
+ body:["As contribuições para o SSV são determinadas nos termos da legislação aplicável da Segurança Social. Em regra, a contribuição é calculada com base no 1.º escalão contributivo, podendo o bolseiro optar por um escalão superior, assumindo nesse caso a diferença correspondente.",
+  "Mais informação disponível em: seg-social.pt (Seguro Social Voluntário)."], refs:{}}
+];
+
+/* ---------------- estrutura do índice (secções) ---------------- */
+const SECTION_ORDER = ["I","II","III","IV","V","VI","VII"];
+const SECTION_TITLES = {
+  "I":"Introdução e objetivos",
+  "II":"Enquadramento legal e tipologias de bolsas",
+  "III":"Procedimento de candidatura, avaliação e atribuição",
+  "IV":"Regime de exclusividade",
+  "V":"Renovação do contrato",
+  "VI":"Componentes financeiras das bolsas",
+  "VII":"Seguro Social Voluntário"
+};
+
+/* ---------------- render: índice lateral ---------------- */
+const tocEl = document.getElementById('toc');
+function buildTOC(){
+  tocEl.innerHTML = "";
+  SECTION_ORDER.forEach((sec, i) => {
+    const entries = DATA.filter(e => e.section === sec);
+    const wrap = document.createElement('div');
+    wrap.className = 'toc-section' + (i===0 ? ' open' : '');
+    wrap.innerHTML = `
+      <div class="toc-section-head">
+        <span class="num">${sec}</span>
+        <span class="title">${SECTION_TITLES[sec]}</span>
+        <span class="chev">▸</span>
+      </div>
+      <div class="toc-subs">
+        ${entries.map(e => `<div class="toc-sub" data-id="${e.id}">${e.sub !== "—" ? e.sub+" · " : ""}${e.subTitle}</div>`).join("")}
+      </div>
+    `;
+    wrap.querySelector('.toc-section-head').addEventListener('click', () => {
+      wrap.classList.toggle('open');
+    });
+    wrap.querySelectorAll('.toc-sub').forEach(el => {
+      el.addEventListener('click', () => renderEntry(el.dataset.id));
+    });
+    tocEl.appendChild(wrap);
+  });
+}
+buildTOC();
+
+/* ---------------- render: quadro comparativo ---------------- */
+function renderTable(t){
+  let html = `<div class="quadro"><div class="quadro-title">${t.title}</div>`;
+  html += `<div class="quadro-row head-row">
+    <div class="qcell">Tema</div><div class="qcell">EBI</div><div class="qcell">FCT, I.P.</div><div class="qcell">NOVA</div>
+  </div>`;
+  t.rows.forEach(r => {
+    html += `<div class="quadro-row">
+      <div class="qcell tema">${r.tema}</div>
+      <div class="qcell ebi">${r.ebi}${r.ebiRef && r.ebiRef!=="—" ? `<span class="src-tag">${r.ebiRef}</span>`:""}</div>
+      <div class="qcell fct">${r.fct}${r.fctRef && r.fctRef!=="—" ? `<span class="src-tag">${r.fctRef}</span>`:""}</div>
+      <div class="qcell nova">${r.nova}${r.novaRef && r.novaRef!=="—" ? `<span class="src-tag">${r.novaRef}</span>`:""}</div>
+    </div>`;
+    if(r.notes){
+      html += `<div class="quadro-row notes"><div class="qcell tema">Notas</div><div class="qcell notes-cell" style="grid-column:2/5; border-right:none;">${r.notes}</div></div>`;
+    }
+  });
+  html += `</div>`;
+  return html;
+}
+
+/* ---------------- render: artigo / entry ---------------- */
+function renderEntry(id, highlight){
+  const e = DATA.find(x => x.id === id);
+  if(!e) return;
+  document.querySelectorAll('.toc-sub').forEach(el => el.classList.toggle('active', el.dataset.id===id));
+  // abrir secção correspondente
+  document.querySelectorAll('.toc-section').forEach(sec=>{
+    if(sec.querySelector(`.toc-sub[data-id="${id}"]`)) sec.classList.add('open');
+  });
+
+  const refPills = [];
+  if(e.refs){
+    Object.entries(e.refs).forEach(([src, arr]) => {
+      arr.forEach(a => refPills.push(`<span class="ref-pill ${src.toLowerCase()}">${src} · ${a}</span>`));
+    });
+  }
+
+  let html = `
+    <div class="crumbs">Secção ${e.section}<span class="sep">/</span>${SECTION_TITLES[e.section]}${e.sub!=="—" ? `<span class="sep">/</span>${e.sub}` : ""}</div>
+    <div class="article-head">
+      <h2>${e.subTitle}</h2>
+    </div>
+    ${refPills.length ? `<div class="refs-strip">${refPills.join("")}</div>` : ""}
+    <div class="block">
+      ${e.body.map(p => `<p>${p}</p>`).join("")}
+    </div>
+    ${e.table ? renderTable(e.table) : ""}
+    ${e.extra ? `<div class="block">${e.extra.map(p=>`<p>${p}</p>`).join("")}</div>` : ""}
+    <div class="status-note">
+      Este conteúdo é uma versão-piloto do manual digital, estruturada por secção/artigo. Em caso de divergência, prevalece sempre o Manual Normativo oficial (PDF, junho 2026) e os diplomas legais aplicáveis.
+    </div>
+  `;
+  document.getElementById('main').innerHTML = html;
+  document.getElementById('main').scrollTo(0,0);
+  window.scrollTo(0,0);
+}
+
+/* ---------------- welcome screen ---------------- */
+function renderWelcome(){
+  const totalArt = DATA.length;
+  const totalTables = DATA.filter(e=>e.table).length;
+  document.getElementById('main').innerHTML = `
+    <div class="welcome">
+      <div class="crumbs">Manual Normativo · Bolsas de Investigação · NOVA FCT</div>
+      <h2 style="font-size:32px;">Consulta digital do manual</h2>
+      <p class="lead">Navegue pelo índice à esquerda ou pesquise por tema, tipologia de bolsa ou artigo. Cada secção cruza o Estatuto do Bolseiro de Investigação (EBI) com os regulamentos da FCT, I.P. e da NOVA — a mesma estrutura poderá alimentar as respostas do Assistente Virtual do Bolseiro.</p>
+      <div class="kpi-row">
+        <div class="kpi"><div class="n">7</div><div class="l">secções</div></div>
+        <div class="kpi"><div class="n">${totalArt}</div><div class="l">entradas indexadas</div></div>
+        <div class="kpi"><div class="n">${totalTables}</div><div class="l">quadros comparativos</div></div>
+        <div class="kpi"><div class="n">3</div><div class="l">diplomas cruzados</div></div>
+      </div>
+      <h3 style="font-size:15px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); font-family:'Inter',sans-serif; font-weight:600;">Acesso rápido</h3>
+      <div class="quickcards">
+        <div class="qcard" data-id="2.3.1"><span class="num">2.3.1</span><h4>Bolsas de Iniciação à Investigação</h4><p>Requisitos, duração e renovação da BII.</p></div>
+        <div class="qcard" data-id="2.3.2"><span class="num">2.3.2</span><h4>Bolsas de Investigação</h4><p>BI — mestrado, doutoramento e modalidade geográfica.</p></div>
+        <div class="qcard" data-id="6"><span class="num">Secção VI</span><h4>Componentes financeiras</h4><p>Subsídio mensal, atualização de valores e subsídios adicionais.</p></div>
+        <div class="qcard" data-id="4"><span class="num">Secção IV</span><h4>Regime de exclusividade</h4><p>Dedicação exclusiva e atividades compatíveis.</p></div>
+        <div class="qcard" data-id="3.5"><span class="num">3.5</span><h4>Avaliação das candidaturas</h4><p>Critérios de mérito e composição do júri.</p></div>
+        <div class="qcard" data-id="7.1"><span class="num">Secção VII</span><h4>Seguro Social Voluntário</h4><p>Natureza, inscrição e contribuições do SSV.</p></div>
+      </div>
+    </div>
+  `;
+  document.querySelectorAll('.qcard').forEach(c=>{
+    c.addEventListener('click', ()=> renderEntry(c.dataset.id));
+  });
+}
+renderWelcome();
+
+/* ---------------- pesquisa ---------------- */
+const searchInput = document.getElementById('searchInput');
+const searchCount = document.getElementById('searchCount');
+
+function normalize(s){
+  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+
+searchInput.addEventListener('input', () => {
+  const q = normalize(searchInput.value.trim());
+  if(!q){
+    searchCount.textContent = "";
+    buildTOC();
+    return;
+  }
+  const results = DATA.filter(e => {
+    const hay = normalize([
+      e.subTitle, e.sub, e.sectionTitle, (e.tags||[]).join(" "),
+      (e.body||[]).join(" "),
+      e.table ? e.table.rows.map(r=>`${r.tema} ${r.ebi} ${r.fct} ${r.nova} ${r.notes||""}`).join(" ") : ""
+    ].join(" "));
+    return hay.includes(q);
+  });
+  searchCount.textContent = `${results.length} resultado${results.length!==1?'s':''} para "${searchInput.value}"`;
+
+  tocEl.innerHTML = "";
+  if(results.length===0){
+    tocEl.innerHTML = `<div class="no-results">Sem resultados. Tente outro termo (ex.: "renovação", "BIPD", "subsídio").</div>`;
+    return;
+  }
+  const bySection = {};
+  results.forEach(e=>{
+    bySection[e.section] = bySection[e.section] || [];
+    bySection[e.section].push(e);
+  });
+  Object.keys(bySection).forEach(sec=>{
+    const wrap = document.createElement('div');
+    wrap.className = 'toc-section open';
+    wrap.innerHTML = `
+      <div class="toc-section-head">
+        <span class="num">${sec}</span>
+        <span class="title">${SECTION_TITLES[sec]}</span>
+      </div>
+      <div class="toc-subs">
+        ${bySection[sec].map(e => `<div class="toc-sub" data-id="${e.id}">${e.sub !== "—" ? e.sub+" · " : ""}${e.subTitle}</div>`).join("")}
+      </div>
+    `;
+    wrap.querySelectorAll('.toc-sub').forEach(el => {
+      el.addEventListener('click', () => renderEntry(el.dataset.id));
+    });
+    tocEl.appendChild(wrap);
+  });
+});
+</script>
+</body>
+</html>
