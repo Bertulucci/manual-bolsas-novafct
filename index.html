@@ -15,8 +15,8 @@
     --paper-dim:#EAF1F7;
     --paper-card:#FFFFFF;
     --line:#D2E1EC;
-    --brass:#5386B4;
-    --brass-soft:#E1EDF6;
+    --brass:#2E6DA0;
+    --brass-soft:#DCEAF6;
     --ebi:#647485;
     --ebi-bg:#EBEEF2;
     --fct:#2E7D6B;
@@ -1166,9 +1166,9 @@ function renderWelcome(){
   const totalTables = DATA.filter(e=>e.table).length;
   document.getElementById('main').innerHTML = `
     <div class="welcome">
-      <div class="crumbs">Manual Normativo · Bolsas de Investigação · NOVA FCT</div>
-      <h2 style="font-size:32px;">Consulta Digital do Manual</h2>
-      <p class="lead">Navegue pelo índice à esquerda ou pesquise por tema, tipologia de bolsa ou artigo. Cada secção cruza o Estatuto do Bolseiro de Investigação (EBI) com os regulamentos da FCT, I.P. e da NOVA — a mesma estrutura poderá alimentar as respostas do Assistente Virtual do Bolseiro.</p>
+      <div class="crumbs" style="font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--ink);">Manual Normativo · Bolsas de Investigação · NOVA FCT</div>
+      <h2 style="font-size:22px; color:var(--ink-soft); font-weight:600;">Consulta Digital do Manual</h2>
+      <p class="lead">Navegue pelo índice ou pesquise por tema, tipologia de bolsa ou artigo. Cada secção cruza o Estatuto do Bolseiro de Investigação (EBI) com os regulamentos da FCT, I.P. e da NOVA.</p>
       <div class="kpi-row">
         <div class="kpi"><div class="n">7</div><div class="l">secções</div></div>
         <div class="kpi"><div class="n">${totalArt}</div><div class="l">entradas indexadas</div></div>
